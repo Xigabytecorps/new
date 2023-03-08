@@ -1,0 +1,156 @@
+/**
+ * ordersValidation.js
+ * @description :: validate each post and put request as per orders model
+ */
+
+const joi = require('joi');
+const {
+  options, isCountOnly, include, select 
+} = require('./commonFilterValidation');
+
+/** validation keys and properties of orders */
+exports.schemaKeys = joi.object({
+  user_id: joi.number().integer().allow(0),
+  order_amount: joi.number().allow(0),
+  coupon_discount_amount: joi.number().allow(0),
+  coupon_discount_title: joi.string().allow(null).allow(''),
+  payment_status: joi.string().allow(null).allow(''),
+  order_status: joi.string().allow(null).allow(''),
+  total_tax_amount: joi.number().allow(0),
+  payment_method: joi.string().allow(null).allow(''),
+  transaction_reference: joi.string().allow(null).allow(''),
+  delivery_address_id: joi.number().integer().allow(0),
+  delivery_man_id: joi.number().integer().allow(0),
+  coupon_code: joi.string().allow(null).allow(''),
+  order_note: joi.any(),
+  order_type: joi.string().allow(null).allow(''),
+  checked: joi.number().integer().allow(0),
+  store_id: joi.number().integer().allow(0),
+  created_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  updated_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivery_charge: joi.number().allow(0),
+  schedule_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  callback: joi.string().allow(null).allow(''),
+  otp: joi.string().allow(null).allow(''),
+  pending: joi.date().options({ convert: true }).allow(null).allow(''),
+  accepted: joi.date().options({ convert: true }).allow(null).allow(''),
+  confirmed: joi.date().options({ convert: true }).allow(null).allow(''),
+  processing: joi.date().options({ convert: true }).allow(null).allow(''),
+  handover: joi.date().options({ convert: true }).allow(null).allow(''),
+  picked_up: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivered: joi.date().options({ convert: true }).allow(null).allow(''),
+  canceled: joi.date().options({ convert: true }).allow(null).allow(''),
+  refund_requested: joi.date().options({ convert: true }).allow(null).allow(''),
+  refunded: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivery_address: joi.any(),
+  scheduled: joi.number().integer().allow(0),
+  store_discount_amount: joi.number().allow(0),
+  original_delivery_charge: joi.number().allow(0),
+  failed: joi.date().options({ convert: true }).allow(null).allow(''),
+  adjusment: joi.number().allow(0),
+  edited: joi.number().integer().allow(0),
+  isDeleted: joi.boolean(),
+  isActive: joi.boolean()
+}).unknown(true);
+
+/** validation keys and properties of orders for updation */
+exports.updateSchemaKeys = joi.object({
+  user_id: joi.number().integer().allow(0),
+  order_amount: joi.number().allow(0),
+  coupon_discount_amount: joi.number().allow(0),
+  coupon_discount_title: joi.string().allow(null).allow(''),
+  payment_status: joi.string().allow(null).allow(''),
+  order_status: joi.string().allow(null).allow(''),
+  total_tax_amount: joi.number().allow(0),
+  payment_method: joi.string().allow(null).allow(''),
+  transaction_reference: joi.string().allow(null).allow(''),
+  delivery_address_id: joi.number().integer().allow(0),
+  delivery_man_id: joi.number().integer().allow(0),
+  coupon_code: joi.string().allow(null).allow(''),
+  order_note: joi.any(),
+  order_type: joi.string().allow(null).allow(''),
+  checked: joi.number().integer().allow(0),
+  store_id: joi.number().integer().allow(0),
+  created_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  updated_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivery_charge: joi.number().allow(0),
+  schedule_at: joi.date().options({ convert: true }).allow(null).allow(''),
+  callback: joi.string().allow(null).allow(''),
+  otp: joi.string().allow(null).allow(''),
+  pending: joi.date().options({ convert: true }).allow(null).allow(''),
+  accepted: joi.date().options({ convert: true }).allow(null).allow(''),
+  confirmed: joi.date().options({ convert: true }).allow(null).allow(''),
+  processing: joi.date().options({ convert: true }).allow(null).allow(''),
+  handover: joi.date().options({ convert: true }).allow(null).allow(''),
+  picked_up: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivered: joi.date().options({ convert: true }).allow(null).allow(''),
+  canceled: joi.date().options({ convert: true }).allow(null).allow(''),
+  refund_requested: joi.date().options({ convert: true }).allow(null).allow(''),
+  refunded: joi.date().options({ convert: true }).allow(null).allow(''),
+  delivery_address: joi.any(),
+  scheduled: joi.number().integer().allow(0),
+  store_discount_amount: joi.number().allow(0),
+  original_delivery_charge: joi.number().allow(0),
+  failed: joi.date().options({ convert: true }).allow(null).allow(''),
+  adjusment: joi.number().allow(0),
+  edited: joi.number().integer().allow(0),
+  isDeleted: joi.boolean(),
+  isActive: joi.boolean(),
+  id: joi.number().integer()
+}).unknown(true);
+
+let keys = ['query', 'where'];
+/** validation keys and properties of orders for filter documents from collection */
+exports.findFilterKeys = joi.object({
+  options: options,
+  ...Object.fromEntries(
+    keys.map(key => [key, joi.object({
+      user_id: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      order_amount: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      coupon_discount_amount: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      coupon_discount_title: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      payment_status: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      order_status: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      total_tax_amount: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      payment_method: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      transaction_reference: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      delivery_address_id: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      delivery_man_id: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      coupon_code: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      order_note: joi.alternatives().try(joi.array().items(),joi.any(),joi.object()),
+      order_type: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      checked: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      store_id: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      created_at: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      updated_at: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      delivery_charge: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      schedule_at: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      callback: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      otp: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      pending: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      accepted: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      confirmed: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      processing: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      handover: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      picked_up: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      delivered: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      canceled: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      refund_requested: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      refunded: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      delivery_address: joi.alternatives().try(joi.array().items(),joi.any(),joi.object()),
+      scheduled: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      store_discount_amount: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      original_delivery_charge: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      failed: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      adjusment: joi.alternatives().try(joi.array().items(),joi.number(),joi.object()),
+      edited: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
+      isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
+      isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
+      id: joi.any()
+    }).unknown(true),])
+  ),
+  isCountOnly: isCountOnly,
+  include: joi.array().items(include),
+  select: select
+    
+}).unknown(true);

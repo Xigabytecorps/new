@@ -1,0 +1,63 @@
+/**
+ * index route file of device platform.
+ * @description: exports all routes of device platform.
+ */
+const express =  require('express');
+const router =  express.Router();
+router.use('/device/auth',require('./auth'));
+router.use(require('./withdraw_requestsRoutes'));
+router.use(require('./wishlistsRoutes'));
+router.use(require('./vendor_employeesRoutes'));
+router.use(require('./vendorsRoutes'));
+router.use(require('./user_notificationsRoutes'));
+router.use(require('./usersRoutes'));
+router.use(require('./translationsRoutes'));
+router.use(require('./track_deliverymenRoutes'));
+router.use(require('./soft_credentialsRoutes'));
+router.use(require('./reviewsRoutes'));
+router.use(require('./restaurant_zoneRoutes'));
+router.use(require('./restaurant_walletsRoutes'));
+router.use(require('./restaurantsRoutes'));
+router.use(require('./provide_d_m_earningsRoutes'));
+router.use(require('./phone_verificationsRoutes'));
+router.use(require('./password_resetsRoutes'));
+router.use(require('./order_transactionsRoutes'));
+router.use(require('./order_detailsRoutes'));
+router.use(require('./order_delivery_historiesRoutes'));
+router.use(require('./ordersRoutes'));
+router.use(require('./oauth_refresh_tokensRoutes'));
+router.use(require('./oauth_personal_access_clientsRoutes'));
+router.use(require('./oauth_clientsRoutes'));
+router.use(require('./oauth_auth_codesRoutes'));
+router.use(require('./oauth_access_tokensRoutes'));
+router.use(require('./notificationsRoutes'));
+router.use(require('./migrationsRoutes'));
+router.use(require('./mail_configsRoutes'));
+router.use(require('./item_campaignsRoutes'));
+router.use(require('./foodRoutes'));
+router.use(require('./failed_jobsRoutes'));
+router.use(require('./employee_rolesRoutes'));
+router.use(require('./email_verificationsRoutes'));
+router.use(require('./d_m_reviewsRoutes'));
+router.use(require('./discountsRoutes'));
+router.use(require('./delivery_menRoutes'));
+router.use(require('./delivery_man_walletsRoutes'));
+router.use(require('./delivery_historiesRoutes'));
+router.use(require('./customer_addressesRoutes'));
+router.use(require('./currenciesRoutes'));
+router.use(require('./couponsRoutes'));
+router.use(require('./conversationsRoutes'));
+router.use(require('./categoriesRoutes'));
+router.use(require('./campaign_restaurantRoutes'));
+router.use(require('./campaignsRoutes'));
+router.use(require('./business_settingsRoutes'));
+router.use(require('./bannersRoutes'));
+router.use(require('./attributesRoutes'));
+router.use(require('./admin_walletsRoutes'));
+router.use(require('./admin_rolesRoutes'));
+router.use(require('./adminsRoutes'));
+router.use(require('./add_onsRoutes'));
+router.use(require('./account_transactionsRoutes'));
+router.use(require('./userRoutes'));
+
+module.exports = router;
